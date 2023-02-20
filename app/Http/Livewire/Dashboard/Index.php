@@ -67,6 +67,14 @@ class Index extends Component
         $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
         $phonesSend = [];
         $phonesNotSend = [];
+        $provinceCount = 0;
+        if ($this->province) {
+            $province = Province::find($this->province);
+            $provinceCount = 0;
+            foreach ($province->cities as $value) {
+                $provinceCount += count($value->phones()->where('network_id', '=', $this->network)->get());
+            }
+        }
         foreach ($phones as $item) {
             if ($item->is_submit) {
                 $phonesSend[] = $item;
@@ -75,11 +83,12 @@ class Index extends Component
             }
         }
         return view('livewire.dashboard.index', [
+            'provinceCount' => $provinceCount,
             'networks' => Network::orderBy('name', 'ASC')->get(),
             'phones' => $phones,
             'phonesSend' => $phonesSend,
             'phonesNotSend' => $phonesNotSend,
-            'cities' => ($this->province) ? City::where('province_id', '=', $this->province)->get() : City::orderBy('name', 'ASC')->get(),
+            'cities' => City::where('province_id', '=', $this->province)->orderBy('name', 'ASC')->get(),
             'networks_filter' => Network::orderBy('name', 'ASC')->get(),
             'provinces' => Province::orderBy('name', 'ASC')->get(),
         ]);

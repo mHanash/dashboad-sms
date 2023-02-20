@@ -103,6 +103,8 @@
                         <li>Message envoyés : {{ number_format(count($phonesSend)) }}</li>
                         <li>Message pas encore envoyés : {{ number_format(count($phonesNotSend)) }}</li>
                     </ul>
+                    <hr>
+                    Total Province : {{ number_format($provinceCount) }}
                 </div>
             </div>
         </div>
