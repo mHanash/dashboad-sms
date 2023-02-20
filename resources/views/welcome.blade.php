@@ -848,9 +848,10 @@
             </div>
         @endif
 
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <h1>Bienvenu(e)</h1><br />
-            <h4>Envoie de SMS</h4>
+        <div style="color:#ebe5e5" class="max-w-7xl mx-auto p-6 lg:p-8">
+            <h1 style="font-size: 5em; font-weight:900; color:#c72424">Bienvenu(e) sur la plateforme</h1><br />
+            <h4 style="font-size:2em">Envoie de SMS</h4>
+            <p>By Calculus System SARL © 2023</p>
         </div>
     </div>
     </div>
