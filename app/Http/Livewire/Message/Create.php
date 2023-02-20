@@ -76,19 +76,10 @@ class Create extends Component
     {
 
         $phones = [];
-        if ($this->network && $this->city) {
-            $phones = Phone::where('network_id', '=', $this->network)->where('city_id', '=', $this->city)->where('is_submit', '=', false)->get();
-        } elseif ($this->network) {
-            $phones = Phone::where('network_id', '=', $this->network)->where('is_submit', '=', false)->get();
-        } elseif ($this->city) {
-            $phones = Phone::where('city_id', '=', $this->city)->where('is_submit', '=', false)->get();
-        } else {
-            $phones = Phone::where('is_submit', '=', false)->get();
-        }
-
+        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
         return view('livewire.message.create', [
             'phones' => $phones,
-            'cities' => ($this->province) ? City::where('province_id', '=', $this->province)->get() : City::orderBy('name', 'ASC')->get(),
+            'cities' => City::where('province_id', '=', $this->province)->orderBy('name', 'ASC')->get(),
             'networks' => Network::orderBy('name', 'ASC')->get(),
             'provinces' => Province::orderBy('name', 'ASC')->get(),
         ]);

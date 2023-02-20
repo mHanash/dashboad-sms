@@ -40,7 +40,7 @@
             <header class=" dark:bg-gray-800 shadow">
                 <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
-                    <button>{{ _('Actualiser') }}</button>
+                    {{-- <button>{{ _('Actualiser') }}</button> --}}
                 </div>
             </header>
         @endif

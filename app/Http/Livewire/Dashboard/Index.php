@@ -64,25 +64,15 @@ class Index extends Component
     }
     public function render()
     {
-        $phones = [];
+        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
         $phonesSend = [];
         $phonesNotSend = [];
-        if ($this->network && $this->city) {
-            $phonesSend = Phone::where('network_id', '=', $this->network)->where('city_id', '=', $this->city)->where('is_submit', '=', true)->get();
-            $phonesNotSend = Phone::where('network_id', '=', $this->network)->where('city_id', '=', $this->city)->where('is_submit', '=', false)->get();
-            $phones =  Phone::where('network_id', '=', $this->network)->where('city_id', '=', $this->city)->get();
-        } elseif ($this->network) {
-            $phonesSend = Phone::where('network_id', '=', $this->network)->where('is_submit', '=', true)->get();
-            $phonesNotSend = Phone::where('network_id', '=', $this->network)->where('is_submit', '=', false)->get();
-            $phones =  Phone::where('network_id', '=', $this->network)->get();
-        } elseif ($this->city) {
-            $phonesSend = Phone::where('city_id', '=', $this->city)->where('is_submit', '=', true)->get();
-            $phonesNotSend = Phone::where('city_id', '=', $this->city)->where('is_submit', '=', false)->get();
-            $phones =  Phone::where('city_id', '=', $this->city)->get();
-        } else {
-            $phonesSend = Phone::where('is_submit', '=', true)->get();
-            $phonesNotSend = Phone::where('is_submit', '=', false)->get();
-            $phones =  Phone::all();
+        foreach ($phones as $item) {
+            if ($item->is_submit) {
+                $phonesSend[] = $item;
+            } else {
+                $phonesNotSend[] = $item;
+            }
         }
         return view('livewire.dashboard.index', [
             'networks' => Network::orderBy('name', 'ASC')->get(),

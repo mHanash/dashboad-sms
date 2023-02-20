@@ -123,7 +123,7 @@ final class PhoneTable extends PowerGridComponent
                 return $model->network->name;
             })
             ->addColumn('city', function (Phone $model) {
-                return $model->city->name;
+                return isset($model->city) ? $model->city->name : "-";
             })
             ->addColumn('is_submit');
     }
