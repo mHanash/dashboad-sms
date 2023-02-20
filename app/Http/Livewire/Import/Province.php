@@ -24,6 +24,7 @@ class Province extends Component
             'title' => "L'importation des provinces a reussie"
         ]);
         $this->emit('pg:eventRefresh-default');
+        $this->reset('file');
     }
     public function render()
     {

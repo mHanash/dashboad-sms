@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Import;
 
 use App\Imports\ImportPhone;
+use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,8 +14,14 @@ class Phone extends Component
 
     public $file;
 
-    public function save()
+    protected $rules = [
+        'file' => 'required'
+    ];
+
+    public function save(Request $request)
     {
+        $this->validate();
+
         Excel::import(
             new ImportPhone,
             $this->file->store('phones')
@@ -24,6 +31,7 @@ class Phone extends Component
             'title' => "L'importation des numéros a reussie"
         ]);
         $this->emit('pg:eventRefresh-default');
+        $this->reset('file');
     }
     public function render()
     {

@@ -148,6 +148,7 @@ final class PhoneTable extends PowerGridComponent
             Column::make('#', 'id'),
 
             Column::make('Numéro', 'number')
+                ->makeInputRange()
                 ->sortable()
                 ->searchable()
                 ->editOnClick(),

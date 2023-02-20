@@ -25,6 +25,7 @@ class City extends Component
             'title' => "L'importation des villes a reussie"
         ]);
         $this->emit('pg:eventRefresh-default');
+        $this->reset('file');
     }
     public function render()
     {
