@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Message;
 
+use App\Jobs\UpdatePhone;
 use App\Models\City;
 use App\Models\Network;
 use App\Models\Phone;
@@ -46,7 +47,7 @@ class Create extends Component
 
             $destination[] = (new SmsDestination())->setTo($phone);
         }
-        // $destination = (new SmsDestination())->setTo('243818674267');
+        $smsResponse = [];
         $message = (new SmsTextualMessage())
             ->setFrom($this->title)
             ->setText($this->bodyMsg)
@@ -62,22 +63,27 @@ class Create extends Component
                 'title' => "Message envoyé"
             ]);
         } catch (Throwable $apiException) {
-            $this->dispatchBrowserEvent('error', ['data' => $apiException->getMessage()]);
+            $this->dispatchBrowserEvent('error', ['data' => 'Code : ' . $apiException->getCode() . ', Message :' . substr($apiException->getMessage(), 0, 20) . '...']);
+        }
+        if ($smsResponse) {
+            foreach ($smsResponse->getMessages() as $value) {
+                $item = Phone::where('number', '=', $value['to']);
+                $item->update(['is_submit' => true]);
+            }
         }
     }
-
     public function render()
     {
 
         $phones = [];
         if ($this->network && $this->city) {
-            $phones = Phone::where('network_id', '=', $this->network)->where('city_id', '=', $this->city)->get();
+            $phones = Phone::where('network_id', '=', $this->network)->where('city_id', '=', $this->city)->where('is_submit', '=', false)->get();
         } elseif ($this->network) {
-            $phones = Phone::where('network_id', '=', $this->network)->get();
+            $phones = Phone::where('network_id', '=', $this->network)->where('is_submit', '=', false)->get();
         } elseif ($this->city) {
-            $phones = Phone::where('city_id', '=', $this->city)->get();
+            $phones = Phone::where('city_id', '=', $this->city)->where('is_submit', '=', false)->get();
         } else {
-            $phones = Phone::all();
+            $phones = Phone::where('is_submit', '=', false)->get();
         }
 
         return view('livewire.message.create', [

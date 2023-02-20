@@ -18,4 +18,26 @@ class Network extends Model
     {
         return $this->hasMany(Phone::class);
     }
+
+    public static function phonesSend($model)
+    {
+        $datas = [];
+        foreach ($model->phones as $value) {
+            if ($value->is_submit) {
+                $datas[] = $value;
+            }
+        }
+        return $datas;
+    }
+
+    public static function phonesNotSend($model)
+    {
+        $datas = [];
+        foreach ($model->phones as $value) {
+            if (!$value->is_submit) {
+                $datas[] = $value;
+            }
+        }
+        return $datas;
+    }
 }

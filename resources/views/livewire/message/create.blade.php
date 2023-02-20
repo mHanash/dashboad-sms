@@ -20,7 +20,7 @@
                                 <input required type="text" wire:model.defer='title' name="company-website"
                                     id="company-website"
                                     class="text-gray-500 block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    placeholder="CENI-RDC">
+                                    placeholder="Ex. CENI-RDC">
                             </div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                         <div class="mt-1">
                             <textarea id="sms" required name="sms" rows="5" wire:model.defer='bodyMsg'
                                 class=" text-gray-500 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="Bonjour à tous, ceci est un test ..."></textarea>
+                                placeholder="Text ici ..."></textarea>
                         </div>
                         <p class="mt-2 text-sm text-gray-500">Ce message sera envoyé après confirmation
                         </p>
