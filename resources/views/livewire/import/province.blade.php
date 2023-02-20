@@ -7,9 +7,16 @@
             </label>
         </div>
         <div class="md:w-2/3">
-            <input required
+            <input required wire:model.defer="file"
                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                id="file" type="file" wire:model.defer='file'>
+                id="file" type="file">
+            @if ($errors->get('file'))
+                <ul class='text-sm text-red-600 space-y-1'>
+                    @foreach ((array) $errors->get('file') as $message)
+                        <li>{{ $message }}</li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </div>
     <div class="md:flex md:items-center">

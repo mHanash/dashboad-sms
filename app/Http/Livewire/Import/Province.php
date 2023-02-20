@@ -12,9 +12,12 @@ class Province extends Component
     use WithFileUploads;
 
     public $file;
-
+    protected $rules = [
+        'file' => 'required'
+    ];
     public function save()
     {
+        $this->validate();
         Excel::import(
             new ImportProvince,
             $this->file->store('provinces')

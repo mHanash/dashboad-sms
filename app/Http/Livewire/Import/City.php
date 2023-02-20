@@ -13,9 +13,12 @@ class City extends Component
     use WithFileUploads;
 
     public $file;
-
+    protected $rules = [
+        'file' => 'required'
+    ];
     public function save()
     {
+        $this->validate();
         Excel::import(
             new ImportCity,
             $this->file->store('cities')

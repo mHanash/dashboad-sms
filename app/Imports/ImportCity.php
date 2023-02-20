@@ -17,11 +17,14 @@ class ImportCity implements ToModel
     {
         ini_set('max_execution_time', 180);
         $province = Province::where('name', $row[1])->first();
+        $ifExist = City::where('name', '=', $row[0])->first();
         if (isset($province)) {
-            return new City([
-                'name' => $row[0],
-                'province_id' => $province->id
-            ]);
+            if (!isset($ifExist)) {
+                return new City([
+                    'name' => $row[0],
+                    'province_id' => $province->id
+                ]);
+            }
         }
     }
 }

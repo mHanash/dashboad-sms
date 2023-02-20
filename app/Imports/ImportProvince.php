@@ -14,9 +14,12 @@ class ImportProvince implements ToModel
      */
     public function model(array $row)
     {
-        ini_get('max_execution_time', 180);
-        return new Province([
-            'name' => $row[0]
-        ]);
+        $ifExist = Province::where('name', '=', $row[0])->first();
+        if (!isset($ifExist)) {
+            ini_get('max_execution_time', 180);
+            return new Province([
+                'name' => $row[0]
+            ]);
+        }
     }
 }

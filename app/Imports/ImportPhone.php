@@ -21,12 +21,15 @@ class ImportPhone implements ToModel
         ini_set('max_execution_time', 180);
         $city = City::where('name', $row[1])->first();
         $network = Network::where('name', $row[2])->first();
+        $ifExist = Phone::where('number', '=', $row[0])->first();
         if (isset($city) && isset($network) && isset($row[0])) {
-            return new Phone([
-                'number' => $row[0],
-                'city_id' => $city->id,
-                'network_id' => $network->id
-            ]);
+            if (!isset($ifExist)) {
+                return new Phone([
+                    'number' => $row[0],
+                    'city_id' => $city->id,
+                    'network_id' => $network->id
+                ]);
+            }
         }
     }
 }
