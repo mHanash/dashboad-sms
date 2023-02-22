@@ -2,10 +2,24 @@
     <div class="inline-block relative w-64">
         <div class="md:w-1/3">
             <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+                Province
+            </label>
+        </div>
+        <select wire:model='province'
+            class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline">
+            <option>Séléctionnez</option>
+            @foreach ($provinces as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="inline-block relative w-64">
+        <div class="md:w-1/3">
+            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
                 Ville
             </label>
         </div>
-        <select wire:model.defer='city' required
+        <select wire:model='city' required
             class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline">
             <option>Séléctionnez</option>
             @foreach ($cities as $item)
@@ -19,7 +33,7 @@
                 Réseau
             </label>
         </div>
-        <select wire:model.defer='network' required
+        <select wire:model='network' required
             class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline">
             <option>Séléctionnez</option>
             @foreach ($networks as $item)

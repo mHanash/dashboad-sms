@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\Message;
 
 use App\Jobs\UpdatePhone;
+use App\Models\Campaign;
 use App\Models\City;
+use App\Models\ListCampaign;
 use App\Models\Network;
 use App\Models\Phone;
 use App\Models\Province;
@@ -20,16 +22,14 @@ class Create extends Component
 {
     public string $title = '';
     public string $bodyMsg = '';
-    public $phoneNumbers = [];
+    public $listId = 0;
 
-    public int $province = 0;
-    public int $city = 0;
-    public int $network = 0;
+    public int $campaign = 0;
 
     public function save()
     {
-        if (count($this->phoneNumbers) == 0) {
-            session()->flash('message', 'Vous n\'avez pas sélectionné un numéro.');
+        if ($this->listId == 0) {
+            session()->flash('message', 'Vous n\'avez pas sélectionné une liste.');
             return $this;
         }
 
@@ -43,9 +43,11 @@ class Create extends Component
 
         $sendSmsApi = new SendSMSApi($client, $configuration);
         $destination = [];
-        foreach ($this->phoneNumbers as $phone) {
-
-            $destination[] = (new SmsDestination())->setTo($phone);
+        $list = ListCampaign::find($this->listId);
+        foreach ($list->phones as $phone) {
+            if (!$phone->pivot->is_submit) {
+                $destination[] = (new SmsDestination())->setTo($phone->number);
+            }
         }
         $smsResponse = [];
         $message = (new SmsTextualMessage())
@@ -67,21 +69,30 @@ class Create extends Component
         }
         if ($smsResponse) {
             foreach ($smsResponse->getMessages() as $value) {
-                $item = Phone::where('number', '=', $value['to']);
-                $item->update(['is_submit' => true]);
+                $item = Phone::where('number', '=', $value['to'])->first();
+                $list->phones()->syncWithoutDetaching([
+                    $item->id => ['is_submit' => true]
+                ]);
             }
         }
+        $this->reset('listId');
+        $this->reset('campaign');
     }
     public function render()
     {
-
-        $phones = [];
-        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
+        $countList = 0;
+        $list = '';
+        if ($this->listId) {
+            $list = ListCampaign::find($this->listId);
+            $phones = $list->phones()->wherePivot('is_submit', '=', false)->get();
+            $countList = count($phones);
+        }
+        $listCampaigns = ListCampaign::where('campaign_id', '=', $this->campaign)->orderBy('description', 'ASC')->get();
         return view('livewire.message.create', [
-            'phones' => $phones,
-            'cities' => City::where('province_id', '=', $this->province)->orderBy('name', 'ASC')->get(),
-            'networks' => Network::orderBy('name', 'ASC')->get(),
-            'provinces' => Province::orderBy('name', 'ASC')->get(),
+            'listName' => $list ? $list->description : '',
+            'countList' => $countList,
+            'campaigns' => Campaign::all(),
+            'listCampaigns' => $listCampaigns
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <form action="#" method="POST" wire:submit.prevent='save'>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div>
                 @if (session()->has('message'))
                     <div class="alert alert-danger alert-block" data-target="alert">
@@ -42,42 +42,38 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-6" style="padding-top: 25px">
             <div class=" sm:overflow-hidden sm:rounded-md">
-                <h6 class="text-gray-500">Numéros de téléphone</h6>
-                <div class="d-flex">
-                    <select wire:model='network'
+                <h6 class="text-gray-500">Liste d'envoie</h6>
+                <div>
+                    <select wire:model='campaign'
                         class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
-                        <option value="0">Réseau</option>
-                        @foreach ($networks as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                    <select wire:model='province'
-                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
-                        <option value="0">Province</option>
-                        @foreach ($provinces as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                    <select wire:model='city'
-                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
-                        <option value="0">Ville</option>
-                        @foreach ($cities as $item)
+                        <option value="0">Campagne</option>
+                        @foreach ($campaigns as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
                 </div>
-                <p style="font-size:12px;color:#7f1d1d">Maintenir CTRL ou Command pour séléctionner plusieurs
-                    numéros</p>
-                <select wire:model='phoneNumbers' class="form-select" size="20" aria-label="size 3 select example"
-                    multiple>
-                    <option disabled selected>Sélectionner un ou plusieurs numéros</option>
-                    @foreach ($phones as $item)
-                        <option value="{{ $item->number }}">
-                            {{ $item->number }}({{ $item->network->name }}-{{ $item->city->name }})</option>
-                    @endforeach
-                </select>
+                <div>
+                    <select wire:model='listId'
+                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
+                        <option value="0">Liste</option>
+                        @foreach ($listCampaigns as $item)
+                            <option value="{{ $item->id }}">{{ $item->description }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div style="margin-top:2em">
+                    @if ($countList > 0)
+                        <h1 class="text-dark font-weight-bold;margin-top:20px">Liste de diffusion : {{ $listName }}
+                        </h1>
+                        <h1 class="text-dark font-weight-bold">Nombre de participants : {{ $countList }}
+                        </h1>
+                    @endif
+                    @if ($listId > 0 && $countList == 0)
+                        <div class="alert alert-danger">Cette liste ne contient pas de numéros, soit déjà envoyée.</div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
