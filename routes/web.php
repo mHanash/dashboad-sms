@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reseaux', [RoutingController::class, 'networks'])->name('network');
     Route::get('/telephones', [RoutingController::class, 'phones'])->name('phone');
     Route::get('/messages', [RoutingController::class, 'message'])->name('message');
+    Route::get('/campagnes', [RoutingController::class, 'campaign'])->name('campaign');
+    Route::get('/campagnes/listes/{campaign}', [RoutingController::class, 'campaign_list'])->name('campaign.list');
 });
 
 require __DIR__ . '/auth.php';

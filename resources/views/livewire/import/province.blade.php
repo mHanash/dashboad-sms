@@ -25,7 +25,7 @@
             <button
                 class="shadow bg-primary hover:bg-primary-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 type="submit">
-                <div wire:loading wire:target="save" class="spinner-border spinner-border-sm" role="status">
+                <div wire:loading class="spinner-border spinner-border-sm" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
                 Importer

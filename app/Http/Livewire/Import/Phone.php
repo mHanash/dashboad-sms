@@ -15,10 +15,10 @@ class Phone extends Component
     public $file;
 
     protected $rules = [
-        'file' => 'required'
+        'file' => 'required|file'
     ];
 
-    public function save(Request $request)
+    public function save()
     {
         $this->validate();
 
@@ -32,6 +32,10 @@ class Phone extends Component
         ]);
         $this->emit('pg:eventRefresh-default');
         $this->reset('file');
+    }
+    public function mount()
+    {
+        ini_set('max_upload_size', '100M');
     }
     public function render()
     {

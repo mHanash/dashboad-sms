@@ -25,4 +25,8 @@ class Phone extends Model
     {
         return $this->belongsTo(City::class);
     }
+    public function lists()
+    {
+        return $this->belongsToMany(Phone::class, 'list_campaign_phone', 'phone_id', 'list_campaign_id')->withPivot('is_submit');
+    }
 }

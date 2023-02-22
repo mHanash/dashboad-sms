@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 
 class RoutingController extends Controller
@@ -25,5 +26,15 @@ class RoutingController extends Controller
     public function message()
     {
         return view('interfaces.message.all');
+    }
+    public function campaign()
+    {
+        return view('interfaces.campaign.all');
+    }
+    public function campaign_list(Request $request)
+    {
+        $campaign = Campaign::find($request->campaign);
+
+        return view('interfaces.listCampaign.all', ['campaign' => $campaign]);
     }
 }

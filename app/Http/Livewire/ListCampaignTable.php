@@ -2,31 +2,26 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\City;
-use App\Models\Province;
+use App\Models\Campaign;
+use App\Models\ListCampaign;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class CityTable extends PowerGridComponent
+final class ListCampaignTable extends PowerGridComponent
 {
     use ActionButton;
+    public Campaign $campaign;
+
     protected $listeners = [
         'eventRefresh-default',
     ];
-    public $name;
+    public $description;
     public function onUpdatedEditable($id, $field, $value): void
     {
-        // if ($field == 'amount') {
-        //     $value = Str::of($value)
-        //         ->replace('.', '')
-        //         ->replace(',', '.')
-        //         ->replaceMatches('/[^Z0-9\.]/', '');
-        // }
-        // $this->validate();
-        City::query()->find($id)->update([
+        ListCampaign::query()->find($id)->update([
             $field => $value,
         ]);
     }
@@ -63,11 +58,11 @@ final class CityTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\City>
+     * @return Builder<\App\Models\ListCampaign>
      */
     public function datasource(): Builder
     {
-        return City::query()->orderBy('name', 'ASC');
+        return ListCampaign::query()->where('campaign_id', '=', $this->campaign->id);
     }
 
     /*
@@ -85,11 +80,7 @@ final class CityTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [
-            'province' => [ // relationship on dishes model
-                'name', // column enabled to search
-            ],
-        ];
+        return [];
     }
 
     /*
@@ -107,15 +98,11 @@ final class CityTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('description')
 
-
-            ->addColumn('province', function (City $model) {
-                return $model->province->name;
-            })
             /** Example of custom column using a closure **/
-            ->addColumn('name_lower', function (City $model) {
-                return strtolower(e($model->name));
+            ->addColumn('count', function (ListCampaign $model) {
+                return number_format(count($model->phones));
             });
     }
 
@@ -138,13 +125,13 @@ final class CityTable extends PowerGridComponent
         return [
             Column::make('#', 'id'),
 
-            Column::make('Noms', 'name')
+            Column::make('DESCRIPTION', 'description')
                 ->sortable()
                 ->searchable()
                 ->editOnClick(),
 
-            Column::make('Provinces', 'province')
-                ->makeInputSelect(Province::all(), 'name', 'province_id'),
+            Column::make('Nombre de participant', 'count'),
+
 
         ];
     }
@@ -158,7 +145,7 @@ final class CityTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid City Action Buttons.
+     * PowerGrid ListCampaign Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -166,12 +153,12 @@ final class CityTable extends PowerGridComponent
     public function actions(): array
     {
         return [
-            //    Button::make('edit', 'Edit')
-            //        ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-            //        ->route('city.edit', ['city' => 'id']),
+            Button::make('edit', 'Détail')
+                ->class('btn btn-primary cursor-pointer text-white px-3 btn-sm py-2.5 m-1 rounded text-sm')
+                ->emit('show', ['id' => 'id']),
 
             Button::make('destroy', 'Delete')
-                ->class('bg-red-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm btn-sm')
+                ->class('btn btn-danger cursor-pointer text-white px-3 py-2.5 btn-sm m-1 rounded text-sm')
                 ->emit('deleted', ['id' => 'id'])
         ];
     }
@@ -185,7 +172,7 @@ final class CityTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid City Action Rules.
+     * PowerGrid ListCampaign Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -197,7 +184,7 @@ final class CityTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($city) => $city->id === 1)
+                ->when(fn($list-campaign) => $list-campaign->id === 1)
                 ->hide(),
         ];
     }

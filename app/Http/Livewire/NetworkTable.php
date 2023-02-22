@@ -160,7 +160,7 @@ final class NetworkTable extends PowerGridComponent
             //        ->route('network.edit', ['network' => 'id']),
 
             Button::make('destroy', 'Delete')
-                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm btn-sm')
+                ->class('bg-red-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm btn-sm')
                 ->emit('deleted', ['id' => 'id'])
         ];
     }
