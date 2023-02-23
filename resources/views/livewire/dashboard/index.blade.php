@@ -99,6 +99,9 @@
                 </div>
                 <div>
                     <ul class="mt-3">
+                        <div wire:loading class="spinner-border spinner-border-sm" role="status" style="height:20px">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                         <li>Nombre d'abonnés total : {{ number_format(count($phones)) }}</li>
                         <li>Message envoyés : {{ number_format(count($phonesSend)) }}</li>
                         <li>Message pas encore envoyés : {{ number_format(count($phonesNotSend)) }}</li>

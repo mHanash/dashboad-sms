@@ -124,8 +124,7 @@ final class PhoneTable extends PowerGridComponent
             })
             ->addColumn('city', function (Phone $model) {
                 return isset($model->city) ? $model->city->name : "-";
-            })
-            ->addColumn('is_submit');
+            });
     }
 
     /*
@@ -157,11 +156,6 @@ final class PhoneTable extends PowerGridComponent
 
             Column::make('Ville', 'city')
                 ->makeInputSelect(City::all(), 'name', 'city_id'),
-
-            Column::make('Envoyer', 'is_submit')
-                ->field('is_submit')
-                ->makeBooleanFilter('is_submit', 'Oui', 'Non')
-                ->toggleable(true, true, false),
 
         ];
     }

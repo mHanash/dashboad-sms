@@ -58,31 +58,31 @@ class Index extends Component
     }
     public function mount()
     {
-        //     $this->countSendSMS = count(Phone::where('is_submit', '=', true)->get());
-        //     $this->countNotSendSMS = count(Phone::where('is_submit', '=', false)->get());
-        // $this->getSolde();
+        $this->countSendSMS = Phone::where('is_submit', '=', true)->count();
+        $this->countNotSendSMS = Phone::where('is_submit', '=', false)->count();
+        $this->getSolde();
     }
     public function render()
     {
         $phones = [];
-        // $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
+        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
         $phonesSend = [];
         $phonesNotSend = [];
         $provinceCount = 0;
-        // if ($this->province) {
-        //     $province = Province::find($this->province);
-        //     $provinceCount = 0;
-        //     foreach ($province->cities as $value) {
-        //         $provinceCount += count($value->phones()->where('network_id', '=', $this->network)->get());
-        //     }
-        // }
-        // foreach ($phones as $item) {
-        //     if ($item->is_submit) {
-        //         $phonesSend[] = $item;
-        //     } else {
-        //         $phonesNotSend[] = $item;
-        //     }
-        // }
+        if ($this->province) {
+            $province = Province::find($this->province);
+            $provinceCount = 0;
+            foreach ($province->cities as $value) {
+                $provinceCount += count($value->phones()->where('network_id', '=', $this->network)->get());
+            }
+        }
+        foreach ($phones as $item) {
+            if ($item->is_submit) {
+                $phonesSend[] = $item;
+            } else {
+                $phonesNotSend[] = $item;
+            }
+        }
         return view('livewire.dashboard.index', [
             'provinceCount' => $provinceCount,
             'networks' => Network::orderBy('name', 'ASC')->get(),
