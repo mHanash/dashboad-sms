@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-4">
             <div style="height:90px;padding:10px" class="text-dark card bg-success">
-                <h3 style="text-align: center;font-size:20px;font-weight: 800;color:beige;">Total SMS restant
+                <h3 style="text-align: center;font-size:20px;font-weight: 800;color:beige;">Balance crédit
                 </h3>
                 @if (count($responseSolde) == 0)
                     <div style="text-align: center">
@@ -62,9 +62,9 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ count($item->phonesSend($item)) }}</td>
-                                <td>{{ count($item->phonesNotSend($item)) }}</td>
-                                <td>{{ count($item->phones) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ number_format($item->phones()->count()) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

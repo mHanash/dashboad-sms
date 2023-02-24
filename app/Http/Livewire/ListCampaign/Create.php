@@ -43,6 +43,10 @@ class Create extends Component
     }
     public function save()
     {
+        if (count($this->phoneNumbers) == 0) {
+            $this->dispatchBrowserEvent('informed', ['msg' => 'La liste ne contient pas de numeros, veuillez ajouter.', 'title' => 'Erreur']);
+            return $this;
+        }
         $this->validate();
         if ($list = ListCampaign::create([
             'description' => $this->description,
@@ -60,15 +64,20 @@ class Create extends Component
     {
         foreach ($this->datas as $value) {
             $exist = false;
-            foreach ($this->phoneNumbers as $val) {
+            $index = 0;
+            foreach ($this->phoneNumbers as $key => $val) {
                 if ($value == $val) {
                     $exist = true;
+                    $index = $key;
                 }
             }
             if (!$exist) {
                 $this->phoneNumbers[] = $value;
+            } else {
+                unset($this->phoneNumbers[$index]);
             }
         }
+        $this->reset('datas');
     }
 
     public function destroy($item)

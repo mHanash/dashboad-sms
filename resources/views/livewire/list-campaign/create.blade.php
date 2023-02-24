@@ -67,7 +67,7 @@
         </select>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-sm btn-danger" data-bs-dismiss="modal">Fermer</button>
+        <a href="#" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Fermer</a>
         <button class="btn btn-sm btn-primary">Enregistrer</button>
     </div>
 </form>
