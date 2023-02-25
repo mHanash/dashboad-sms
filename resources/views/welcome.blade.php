@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
     <meta charset="utf-8">
@@ -848,10 +848,10 @@
             </div>
         @endif
 
-        <div style="color:#ebe5e5" class="max-w-7xl mx-auto p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <h1 style="font-size: 5em; font-weight:900; color:#c72424">Bienvenu(e) sur la plateforme</h1><br />
-            <h4 style="font-size:2em">Envoie de SMS</h4>
-            <p>By Calculus System SARL © 2023</p>
+            <h4 class="dark:text-gray-900" style="font-size:2em">Envoie de SMS</h4>
+            <p class="dark:text-gray-900">By Calculus System SARL © 2023</p>
         </div>
     </div>
     </div>

@@ -68,12 +68,14 @@ class Create extends Component
             $this->dispatchBrowserEvent('error', ['data' => 'Code : ' . $apiException->getCode() . ', Message :' . substr($apiException->getMessage(), 0, 20) . '...']);
         }
         if ($smsResponse) {
+            $ids = [];
             foreach ($smsResponse->getMessages() as $value) {
                 $item = Phone::where('number', '=', $value['to'])->first();
-                $list->phones()->syncWithoutDetaching([
-                    $item->id => ['is_submit' => true]
-                ]);
+                $ids[] = $item->id;
             }
+
+            $forSync = array_fill_keys($ids, ['is_submit' => true]);
+            $list->phones()->sync($forSync);
         }
         $this->reset('listId');
         $this->reset('campaign');

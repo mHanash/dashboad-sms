@@ -18,7 +18,7 @@ class ImportPhone implements ToModel
      */
     public function model(array $row)
     {
-        ini_set('max_execution_time', 180);
+        // ini_set('max_execution_time', 180);
         $city = City::where('name', $row[1])->first();
         $network = Network::where('name', $row[2])->first();
         $ifExist = Phone::where('number', '=', $row[0])->first();

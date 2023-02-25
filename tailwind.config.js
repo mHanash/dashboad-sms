@@ -11,7 +11,7 @@ module.exports = {
         "./vendor/power-components/livewire-powergrid/resources/views/**/*.php",
         "./vendor/power-components/livewire-powergrid/src/Themes/Tailwind.php",
     ],
-    darkMode: "class",
+    // darkMode: "class",
     theme: {
         extend: {
             fontFamily: {
