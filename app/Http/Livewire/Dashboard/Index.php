@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Dashboard;
 
+use App\Models\Campaign;
 use App\Models\City;
+use App\Models\ListCampaign;
 use App\Models\Network;
 use App\Models\Phone;
 use App\Models\Province;
@@ -10,12 +12,16 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $countTotSMS = 0;
+    public $countTotPhones = 0;
     public $countSendSMS = 0;
     public $countNotSendSMS = 0;
+    public $countCampaign = 0;
 
     public $province = 0;
+    public $list = 0;
+    public $networklist = 0;
     public $network = 0;
+    public $campaign = 0;
     public $city = 0;
     public $solde = 0;
     public $responseSolde = [];
@@ -58,12 +64,24 @@ class Index extends Component
     }
     public function mount()
     {
-        $this->countSendSMS = Phone::where('is_submit', '=', true)->count();
-        $this->countNotSendSMS = Phone::where('is_submit', '=', false)->count();
+        $this->countCampaign = Campaign::count();
+        $this->countTotPhones = Phone::count();
         $this->getSolde();
     }
     public function render()
     {
+
+        $phonesListSend = 0;
+        $phonesListNotSend = 0;
+        $phonesListTot = 0;
+        if ($this->campaign) {
+            $phonesListTot = Campaign::find($this->campaign)->lists()->count();
+        }
+        if ($this->list) {
+            $list = ListCampaign::find($this->list);
+            $phonesListSend += $list->phones()->where('network_id', '=', $this->networklist)->wherePivot('is_submit', '=', true)->count();
+            $phonesListNotSend += $list->phones()->where('network_id', '=', $this->networklist)->wherePivot('is_submit', '=', false)->count();
+        }
         $phones = [];
         $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
         $phonesSend = [];
@@ -84,13 +102,18 @@ class Index extends Component
             }
         }
         return view('livewire.dashboard.index', [
+            'phonesListTot' => $phonesListTot,
+            'phonesListSend' => $phonesListSend,
+            'phonesListNotSend' => $phonesListNotSend,
             'provinceCount' => $provinceCount,
             'networks' => Network::orderBy('name', 'ASC')->get(),
             'phones' => $phones,
             'phonesSend' => $phonesSend,
             'phonesNotSend' => $phonesNotSend,
-            'cities' => City::where('province_id', '=', $this->province)->orderBy('name', 'ASC')->get(),
+            'campaigns' => Campaign::orderBy('name', 'ASC')->get(),
+            'listCampaigns' => ListCampaign::where('campaign_id', '=', $this->campaign)->get(),
             'networks_filter' => Network::orderBy('name', 'ASC')->get(),
+            'cities' => City::where('province_id', '=', $this->province)->orderBy('name', 'ASC')->get(),
             'provinces' => Province::orderBy('name', 'ASC')->get(),
         ]);
     }

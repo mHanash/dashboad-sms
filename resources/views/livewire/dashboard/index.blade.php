@@ -19,20 +19,18 @@
         <div class="col-md-4">
             <div style="height:90px;padding:10px" class="text-dark card bg-info">
                 <h4 style="text-align: center;font-size:20px;font-weight: 800;color:rgb(92, 99, 110);">
-                    Message envoyés
+                    Campagnes
                 </h4>
                 <span
-                    style="text-align: center;font-size:30px;font-weight: 800;color:rgb(174, 72, 72);">{{ number_format($countSendSMS) }}</span>
+                    style="text-align: center;font-size:30px;font-weight: 800;color:rgb(174, 72, 72);">{{ number_format($countCampaign) }}</span>
             </div>
         </div>
         <div class="col-md-4">
             <div style="height:90px;padding:10px" class="text-dark card bg-warning">
                 <h4 style="text-align: center;font-size:20px;font-weight: 800;color:rgb(92, 99, 110);">
-                    Numéros
-                    pas
-                    envoyés</h4>
+                    Total numéros</h4>
                 <span
-                    style="text-align: center;font-size:30px;font-weight: 800;color:rgb(174, 72, 72);">{{ number_format($countNotSendSMS) }}</span>
+                    style="text-align: center;font-size:30px;font-weight: 800;color:rgb(174, 72, 72);">{{ number_format($countTotPhones) }}</span>
             </div>
         </div>
     </div>
@@ -72,6 +70,45 @@
             </div>
         </div>
         <div class="col-md-8">
+            <h4>Détails</h4>
+            <div class="card bg-white bg-dark p-4 mt-1">
+                <div class="d-flex">
+                    <select wire:model='campaign'
+                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
+                        <option value="0">Campagnes</option>
+                        @foreach ($campaigns as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                    <select wire:model='list'
+                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
+                        <option value="0">Listes</option>
+                        @foreach ($listCampaigns as $item)
+                            <option value="{{ $item->id }}">{{ $item->description }}</option>
+                        @endforeach
+                    </select>
+                    <select wire:model='networklist'
+                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
+                        <option value="0">Réseaux</option>
+                        @foreach ($networks_filter as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <ul class="mt-3 text-dark">
+                        <div wire:loading wire:target="networklist,list" class="spinner-border spinner-border-sm"
+                            role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <li>Nombre de message envoyé : {{ number_format($phonesListSend) }}</li>
+                        <li>Nombre de message non envoyé : {{ number_format($phonesListNotSend) }}</li>
+                    </ul>
+                    <hr class="text-dark">
+                    <span class="text-dark">Total de listes : {{ number_format($phonesListTot) }}</span>
+                </div>
+            </div>
             <h4>Statistique par filtre</h4>
             <div class="card bg-white bg-dark p-4 mt-1">
                 <div class="d-flex">
@@ -93,13 +130,15 @@
                         class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
                         <option value="0">Ville</option>
                         @foreach ($cities as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->phones()->count() }})
+                            </option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <ul class="mt-3 text-dark">
-                        <div wire:loading class="spinner-border spinner-border-sm" role="status">
+                        <div wire:loading wire:target="phones,city" class="spinner-border spinner-border-sm"
+                            role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                         <li>Nombre d'abonnés total : {{ number_format(count($phones)) }}</li>
