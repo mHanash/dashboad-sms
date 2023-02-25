@@ -79,13 +79,10 @@ class Index extends Component
         }
         if ($this->list) {
             $list = ListCampaign::find($this->list);
-            $phonesListSend += $list->phones()->where('network_id', '=', $this->networklist)->wherePivot('is_submit', '=', true)->count();
-            $phonesListNotSend += $list->phones()->where('network_id', '=', $this->networklist)->wherePivot('is_submit', '=', false)->count();
+            $phonesListSend += $list->phones()->wherePivot('is_submit', '=', true)->count();
+            $phonesListNotSend += $list->phones()->wherePivot('is_submit', '=', false)->count();
         }
-        $phones = [];
-        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->get();
-        $phonesSend = [];
-        $phonesNotSend = [];
+        $phonesCount = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->count();
         $provinceCount = 0;
         if ($this->province) {
             $province = Province::find($this->province);
@@ -94,22 +91,13 @@ class Index extends Component
                 $provinceCount += count($value->phones()->where('network_id', '=', $this->network)->get());
             }
         }
-        foreach ($phones as $item) {
-            if ($item->is_submit) {
-                $phonesSend[] = $item;
-            } else {
-                $phonesNotSend[] = $item;
-            }
-        }
         return view('livewire.dashboard.index', [
             'phonesListTot' => $phonesListTot,
             'phonesListSend' => $phonesListSend,
             'phonesListNotSend' => $phonesListNotSend,
             'provinceCount' => $provinceCount,
             'networks' => Network::orderBy('name', 'ASC')->get(),
-            'phones' => $phones,
-            'phonesSend' => $phonesSend,
-            'phonesNotSend' => $phonesNotSend,
+            'phonesCount' => $phonesCount,
             'campaigns' => Campaign::orderBy('name', 'ASC')->get(),
             'listCampaigns' => ListCampaign::where('campaign_id', '=', $this->campaign)->get(),
             'networks_filter' => Network::orderBy('name', 'ASC')->get(),

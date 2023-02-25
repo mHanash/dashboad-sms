@@ -38,14 +38,12 @@
         <div class="col-md-4">
             <h4>Répartition d'abonnés par réseau</h4>
             <div class="card bg-white dark:bg-dark p-4 mt-1">
-                <h4>Total</h4>
+                <h4 class="text-dark">Total</h4>
                 <table class="table-sm table-bordered bg-light text-dark">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Nom</th>
-                            <th>Envoyés</th>
-                            <th>Pas envoyés</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -60,8 +58,6 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td></td>
-                                <td></td>
                                 <td>{{ number_format($item->phones()->count()) }}</td>
                             </tr>
                         @endforeach
@@ -87,23 +83,16 @@
                             <option value="{{ $item->id }}">{{ $item->description }}</option>
                         @endforeach
                     </select>
-                    <select wire:model='networklist'
-                        class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
-                        <option value="0">Réseaux</option>
-                        @foreach ($networks_filter as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}
-                            </option>
-                        @endforeach
-                    </select>
                 </div>
                 <div>
                     <ul class="mt-3 text-dark">
-                        <div wire:loading wire:target="networklist,list" class="spinner-border spinner-border-sm"
+                        <div wire:loading wire:target="list,campaign" class="spinner-border spinner-border-sm"
                             role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                         <li>Nombre de message envoyé : {{ number_format($phonesListSend) }}</li>
                         <li>Nombre de message non envoyé : {{ number_format($phonesListNotSend) }}</li>
+                        <li>Total de la liste : {{ number_format($phonesListSend + $phonesListNotSend) }}</li>
                     </ul>
                     <hr class="text-dark">
                     <span class="text-dark">Total de listes : {{ number_format($phonesListTot) }}</span>
@@ -137,13 +126,11 @@
                 </div>
                 <div>
                     <ul class="mt-3 text-dark">
-                        <div wire:loading wire:target="phones,city" class="spinner-border spinner-border-sm"
+                        <div wire:loading wire:target="province,city" class="spinner-border spinner-border-sm"
                             role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                        <li>Nombre d'abonnés total : {{ number_format(count($phones)) }}</li>
-                        <li>Message envoyés : {{ number_format(count($phonesSend)) }}</li>
-                        <li>Message pas encore envoyés : {{ number_format(count($phonesNotSend)) }}</li>
+                        <li>Nombre d'abonnés total : {{ number_format($phonesCount) }}</li>
                     </ul>
                     <hr class="text-dark">
                     <span class="text-dark">Total Province : {{ number_format($provinceCount) }}</span>
