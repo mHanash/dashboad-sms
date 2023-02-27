@@ -44,6 +44,8 @@
                         <tr>
                             <th>#</th>
                             <th>Nom</th>
+                            <th>Envoyé</th>
+                            <th>Attente</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -58,6 +60,8 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $item->name }}</td>
+                                <td>{{ number_format(App\Models\ListCampaign::phonesSend($item)) }}</td>
+                                <td>{{ number_format(App\Models\ListCampaign::phonesNotSend($item)) }}</td>
                                 <td>{{ number_format($item->phones()->count()) }}</td>
                             </tr>
                         @endforeach
@@ -95,7 +99,9 @@
                         <li>Total de la liste : {{ number_format($phonesListSend + $phonesListNotSend) }}</li>
                     </ul>
                     <hr class="text-dark">
-                    <span class="text-dark">Total de listes : {{ number_format($phonesListTot) }}</span>
+                    <span class="text-dark">Total de listes : {{ number_format($phonesListTot) }}</span><span
+                        class="text-dark"> | Total
+                        messages envoyés : {{ number_format($countCampaignListSend) }}</span>
                 </div>
             </div>
             <h4>Statistique par filtre</h4>

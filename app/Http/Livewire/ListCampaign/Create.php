@@ -91,7 +91,7 @@ class Create extends Component
     {
         $phones = [];
         ini_set('max_execution_time', 180);
-        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->paginate(100);
+        $phones = Phone::where('city_id', '=', $this->city)->where('network_id', '=', $this->network)->whereRaw('LENGTH(number) = 12')->paginate(100);
         return view('livewire.list-campaign.create', [
             'phones' => $phones,
             'cities' => City::where('province_id', '=', $this->province)->orderBy('name', 'ASC')->get(),

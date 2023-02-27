@@ -27,6 +27,6 @@ class Phone extends Model
     }
     public function lists()
     {
-        return $this->belongsToMany(Phone::class, 'list_campaign_phone', 'phone_id', 'list_campaign_id')->withPivot('is_submit');
+        return $this->belongsToMany(Phone::class, 'list_campaign_phone', 'phone_id', 'list_campaign_id')->withPivot(['is_submit', 'message_id']);
     }
 }

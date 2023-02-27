@@ -32,7 +32,7 @@
                 class="block text-gray-500 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8  leading-tight focus:outline-none ">
                 <option value="0">Ville</option>
                 @foreach ($cities as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->phones()->count() }})</option>
                 @endforeach
             </select>
         </div>

@@ -74,8 +74,13 @@ class Index extends Component
         $phonesListSend = 0;
         $phonesListNotSend = 0;
         $phonesListTot = 0;
+        $countCampaignListSend = 0;
         if ($this->campaign) {
-            $phonesListTot = Campaign::find($this->campaign)->lists()->count();
+            $data = Campaign::find($this->campaign)->lists();
+            $phonesListTot = $data->count();
+            foreach ($data->get() as $listItem) {
+                $countCampaignListSend += $listItem->phones()->wherePivot('is_submit', '=', true)->count();
+            }
         }
         if ($this->list) {
             $list = ListCampaign::find($this->list);
@@ -91,7 +96,9 @@ class Index extends Component
                 $provinceCount += count($value->phones()->where('network_id', '=', $this->network)->get());
             }
         }
+
         return view('livewire.dashboard.index', [
+            'countCampaignListSend' => $countCampaignListSend,
             'phonesListTot' => $phonesListTot,
             'phonesListSend' => $phonesListSend,
             'phonesListNotSend' => $phonesListNotSend,
