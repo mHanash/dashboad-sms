@@ -18,4 +18,21 @@ class Network extends Model
     {
         return $this->hasMany(Phone::class);
     }
+    public static function phonesSend($network)
+    {
+        $count = 0;
+        foreach (ListCampaign::all() as $list) {
+            $count += $list->phones()->where('network_id', '=', $network->id)->wherePivot('is_submit', '=', true)->count();
+        }
+        return $count;
+    }
+
+    public static function phonesNotSend($network)
+    {
+        $count = 0;
+        foreach (ListCampaign::all() as $list) {
+            $count += $list->phones()->where('network_id', '=', $network->id)->wherePivot('is_submit', '=', false)->count();
+        }
+        return $count;
+    }
 }

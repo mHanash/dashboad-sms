@@ -60,8 +60,8 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ number_format(App\Models\ListCampaign::phonesSend($item)) }}</td>
-                                <td>{{ number_format(App\Models\ListCampaign::phonesNotSend($item)) }}</td>
+                                <td>{{ number_format(App\Models\Network::phonesSend($item)) }}</td>
+                                <td>{{ number_format(App\Models\Network::phonesNotSend($item)) }}</td>
                                 <td>{{ number_format($item->phones()->count()) }}</td>
                             </tr>
                         @endforeach
